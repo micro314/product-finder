@@ -5,7 +5,7 @@ import java.net.URI;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("keycloak")
-record KeycloakProperties(URI issuerUri, String clientId, URI redirectUri) {
+record KeycloakProperties(URI issuerUri, URI jwkSetUri, String clientId, URI redirectUri) {
 
     boolean hasIssuer() {
         return issuerUri != null && !issuerUri.toString().isBlank();
@@ -14,5 +14,9 @@ record KeycloakProperties(URI issuerUri, String clientId, URI redirectUri) {
     boolean hasLoginConfiguration() {
         return hasIssuer() && clientId != null && !clientId.isBlank()
                 && redirectUri != null && !redirectUri.toString().isBlank();
+    }
+
+    boolean hasJwkSetUri() {
+        return jwkSetUri != null && !jwkSetUri.toString().isBlank();
     }
 }

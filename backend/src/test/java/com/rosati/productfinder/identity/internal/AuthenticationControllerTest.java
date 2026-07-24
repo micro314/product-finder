@@ -41,7 +41,7 @@ class AuthenticationControllerTest {
     @Test
     void reportsMissingKeycloakConfiguration() throws Exception {
         MockMvc mvc = MockMvcBuilders.standaloneSetup(
-                new AuthenticationController(new KeycloakProperties(null, null, null))).build();
+                new AuthenticationController(new KeycloakProperties(null, null, null, null))).build();
 
         mvc.perform(get("/api/auth/login"))
                 .andExpect(status().isServiceUnavailable());
@@ -50,6 +50,7 @@ class AuthenticationControllerTest {
     private MockMvc controllerWithKeycloak() {
         return MockMvcBuilders.standaloneSetup(new AuthenticationController(new KeycloakProperties(
                 URI.create("https://keycloak.example.com/realms/product-finder"),
+                null,
                 "product-finder-web",
                 URI.create("https://app.example.com/auth/callback")))).build();
     }

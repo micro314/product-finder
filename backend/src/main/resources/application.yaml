@@ -6,6 +6,8 @@ spring:
 # https://keycloak.example.com/realms/product-finder
 keycloak:
   issuer-uri: ${KEYCLOAK_ISSUER_URI:}
+  # Use this only when the issuer URL is not reachable from the backend, such as Docker Compose development.
+  jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:}
   client-id: ${KEYCLOAK_CLIENT_ID:}
   redirect-uri: ${KEYCLOAK_REDIRECT_URI:}
 
