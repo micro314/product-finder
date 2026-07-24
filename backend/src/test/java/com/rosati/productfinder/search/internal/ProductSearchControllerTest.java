@@ -1,5 +1,6 @@
 package com.rosati.productfinder.search.internal;
 
+import com.rosati.productfinder.history.QueryHistoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductSearchControllerTest {
     @Autowired MockMvc mvc;
     @MockitoBean ProductSearchService service;
+    @MockitoBean QueryHistoryService queryHistory;
 
     @Test
     void delegatesValidSearches() throws Exception {

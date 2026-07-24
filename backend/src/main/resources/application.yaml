@@ -1,6 +1,9 @@
 spring:
   application:
     name: product-finder
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:none}
 
 # Set these in the deployment environment. The issuer must include the realm, for example:
 # https://keycloak.example.com/realms/product-finder

@@ -71,8 +71,14 @@ registration** in the realm if users should be able to create their own accounts
 With `KEYCLOAK_ISSUER_URI` configured, the backend validates issuer-signed JWTs on the authenticated endpoint. The
 product search API remains public.
 
+## Query history
+
+Every product search submitted with a Keycloak bearer token is stored against that token's subject. Retrieve the
+current user's most recent searches with `GET /api/query-history` and the same bearer token. Anonymous searches remain
+available but are not stored because they cannot be attributed to a user.
+
 For local development, run `docker compose up --build`. It starts Keycloak at `http://localhost:8081` with the
 `product-finder` realm and a `product-finder-web` public client. The default Keycloak administrator is `admin` /
 `admin`; override `KEYCLOAK_ADMIN_PASSWORD` before using it outside local development. The compose file uses
 `KEYCLOAK_JWK_SET_URI` so the backend can retrieve signing keys over the Docker network while retaining the browser's
-`localhost` issuer URL.
+`localhost` issuer URL. It also starts PostgreSQL and stores its data in the `product-finder-postgres` Docker volume.
