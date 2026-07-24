@@ -1,7 +1,6 @@
 package com.rosati.productfinder.product;
 
 public record ProductQuery(String text, int limit) {
-    public static final int DEFAULT_LIMIT = 20;
     public static final int MAX_LIMIT = 100;
 
     public ProductQuery {
