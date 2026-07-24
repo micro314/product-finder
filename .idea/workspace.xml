@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ba6a0dd8-6154-480c-a110-8f6cf165fcd3" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="16" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/backend">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="product-finder" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.000000000562369" />
+      <entry key="S10" value="1.0001860529316968" />
+      <entry key="S30" value="2.220833400269898" />
+      <entry key="S60" value="15.391484493533202" />
+      <entry key="M2" value="60.34541304740772" />
+      <entry key="M5" value="165.33024919154835" />
+      <entry key="M10" value="242.81248928720998" />
+      <entry key="M15" value="277.74349767265267" />
+      <entry key="M30" value="318.7390657499313" />
+      <entry key="H1" value="341.8768945664096" />
+      <entry key="H2" value="354.17881119439414" />
+      <entry key="H4" value="360.5230002189395" />
+      <entry key="D1" value="365.9111470751894" />
+      <entry key="W1" value="366.8442188144773" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="2.9884790226694328E-36" />
+      <entry key="MS500" value="7.853984545076733E-8" />
+      <entry key="S2" value="0.01674065752770924" />
+      <entry key="S5" value="0.19484044074817972" />
+      <entry key="S10" value="0.4500557652615595" />
+      <entry key="S30" value="0.9672961772189322" />
+      <entry key="S60" value="1.326366208489718" />
+      <entry key="M2" value="1.60776179992886" />
+      <entry key="M5" value="1.8269397069499915" />
+      <entry key="M10" value="1.9104927065917625" />
+      <entry key="M15" value="1.9396440991135704" />
+      <entry key="M30" value="1.9694739792661289" />
+      <entry key="H1" value="1.984648850574981" />
+      <entry key="H2" value="1.9923022487237665" />
+      <entry key="H4" value="1.9961455623942086" />
+      <entry key="D1" value="1.999356819719027" />
+      <entry key="W1" value="1.9999080981274646" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="5.623890751995468E-6" />
+      <entry key="MS500" value="0.08912663225734363" />
+      <entry key="S2" value="0.558953395083548" />
+      <entry key="S5" value="0.958937394652075" />
+      <entry key="S10" value="1.3105748944700266" />
+      <entry key="S30" value="3.1243171701669072" />
+      <entry key="S60" value="16.67802626469606" />
+      <entry key="M2" value="61.92898788716284" />
+      <entry key="M5" value="167.1451836770301" />
+      <entry key="M10" value="244.71625010286408" />
+      <entry key="M15" value="279.67844301008864" />
+      <entry key="M30" value="320.70606863076677" />
+      <entry key="H1" value="343.8602738829263" />
+      <entry key="H2" value="356.17046968553154" />
+      <entry key="H4" value="362.51882158968914" />
+      <entry key="D1" value="367.9104495360365" />
+      <entry key="W1" value="368.84411913896975" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3GvrrUj9pg1XjaNmignn39Qx3x1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build backend.executor": "Run",
+    "Gradle.ProductFinderApplicationTests.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.ProductFinderApplication (1).executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.folding",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.ProductFinderApplication (1)">
+    <configuration name="ProductFinderApplicationTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.rosati.productfinder.ProductFinderApplicationTests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="ProductFinderApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="com.rosati.product-finder.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.rosati.productfinder.ProductFinderApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.rosati.productfinder.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductFinderApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="product-finder.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.rosati.productfinder.ProductFinderApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ProductFinderApplication (1)" />
+        <item itemvalue="Gradle.ProductFinderApplicationTests" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-63390994e64e-intellij.indexing.shared.core-IU-262.8665.337" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.8665.337" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ba6a0dd8-6154-480c-a110-8f6cf165fcd3" name="Changes" comment="" />
+      <created>1784863083161</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1784863083161</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
