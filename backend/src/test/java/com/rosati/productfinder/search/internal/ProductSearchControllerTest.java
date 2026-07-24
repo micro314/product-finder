@@ -20,7 +20,7 @@ class ProductSearchControllerTest {
     @Test
     void delegatesValidSearches() throws Exception {
         when(service.search(any())).thenReturn(new SearchResponse(null, null));
-        mvc.perform(get("/api/products/search").param("q", "chair").param("limit", "5"))
+        mvc.perform(get("/api/products/search").param("q", "rtx 5070").param("limit", "5"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.products").isArray());
     }
 

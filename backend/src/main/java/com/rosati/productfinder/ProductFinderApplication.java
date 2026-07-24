@@ -9,7 +9,7 @@ import org.springframework.modulith.Modulith;
 )
 public class ProductFinderApplication {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpringApplication.run(ProductFinderApplication.class, args);
     }
 }

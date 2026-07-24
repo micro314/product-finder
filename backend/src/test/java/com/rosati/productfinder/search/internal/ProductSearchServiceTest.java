@@ -12,13 +12,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProductSearchServiceTest {
     @Test
     void combinesSortsAndIsolatesSourceFailures() {
-        ProductSource successful = source("working", List.of(product("working", "2", "Zebra"), product("working", "1", "apple")), null);
+        ProductSource successful = source("working", List.of(
+                product("working", "2", "ZOTAC GeForce RTX 5070"),
+                product("working", "1", "ASUS GeForce RTX 5070")), null);
         ProductSource failing = source("broken", null, new IllegalStateException("offline"));
         var service = new ProductSearchService(() -> List.of(successful, failing));
 
-        var response = service.search(new ProductQuery("desk", 20));
+        var response = service.search(new ProductQuery("rtx 5070", 20));
 
-        assertThat(response.products()).extracting(Product::name).containsExactly("apple", "Zebra");
+        assertThat(response.products()).extracting(Product::name)
+                .containsExactly("ASUS GeForce RTX 5070", "ZOTAC GeForce RTX 5070");
         assertThat(response.failures()).singleElement().satisfies(failure -> {
             assertThat(failure.source()).isEqualTo("broken");
             assertThat(failure.message()).isEqualTo("offline");
@@ -29,7 +32,7 @@ class ProductSearchServiceTest {
     void toleratesNullResultsAndExceptionsWithoutMessages() {
         var service = new ProductSearchService(() -> List.of(source("empty", null, null),
                 source("bad", null, new IllegalStateException())));
-        var response = service.search(new ProductQuery("desk", 20));
+        var response = service.search(new ProductQuery("rtx 5070", 20));
         assertThat(response.products()).isEmpty();
         assertThat(response.failures().getFirst().message()).isEqualTo("IllegalStateException");
     }
