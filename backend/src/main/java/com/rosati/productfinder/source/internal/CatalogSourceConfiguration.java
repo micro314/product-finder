@@ -17,19 +17,22 @@ class CatalogSourceConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "product-finder.catalogs.newegg", name = "enabled", havingValue = "true")
     NeweggProductSource neweggProductSource(CatalogProperties properties) {
-        return new NeweggProductSource(client(properties, properties.getCatalogs().getNewegg(), "X-Newegg-Api-Key"));
+        return new NeweggProductSource(client(properties, properties.getCatalogs().getNewegg(), "X-Newegg-Api-Key"),
+                properties.getFullRefreshLimit());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "product-finder.catalogs.bh-photo-video", name = "enabled", havingValue = "true")
     BhPhotoVideoProductSource bhPhotoVideoProductSource(CatalogProperties properties) {
-        return new BhPhotoVideoProductSource(client(properties, properties.getCatalogs().getBhPhotoVideo(), "Authorization"));
+        return new BhPhotoVideoProductSource(client(properties, properties.getCatalogs().getBhPhotoVideo(), "Authorization"),
+                properties.getFullRefreshLimit());
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "product-finder.catalogs.abt", name = "enabled", havingValue = "true")
     AbtProductSource abtProductSource(CatalogProperties properties) {
-        return new AbtProductSource(client(properties, properties.getCatalogs().getAbt(), "X-Abt-Api-Key"));
+        return new AbtProductSource(client(properties, properties.getCatalogs().getAbt(), "X-Abt-Api-Key"),
+                properties.getFullRefreshLimit());
     }
 
     @Bean

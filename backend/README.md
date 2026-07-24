@@ -77,8 +77,22 @@ Every product search submitted with a Keycloak bearer token is stored against th
 current user's most recent searches with `GET /api/query-history` and the same bearer token. Anonymous searches remain
 available but are not stored because they cannot be attributed to a user.
 
+## Catalog cache
+
+At midnight UTC each enabled catalog is queried with its wildcard full-catalog request and the results are upserted
+into MongoDB's `catalog_products` collection. Every cached record retains both the catalog name and its external
+product ID. Records missing from a successfully refreshed catalog are removed. Override the schedule with
+`PRODUCT_CACHE_REFRESH_CRON` and `PRODUCT_CACHE_REFRESH_ZONE`; `PRODUCT_FULL_REFRESH_LIMIT` defaults to 10,000.
+Set `MONGODB_AUTO_INDEX_CREATION=true` when provisioning a new MongoDB deployment so its source/external-ID unique
+index is created automatically (the Compose setup already does this).
+
+The remote catalog APIs currently expose search-style contracts rather than a documented paginated inventory feed, so
+the adapters use the providers' wildcard query convention for their complete graphics-card catalogs. If a provider
+publishes a different inventory or pagination API, update that adapter's `allProducts()` implementation.
+
 For local development, run `docker compose up --build`. It starts Keycloak at `http://localhost:8081` with the
 `product-finder` realm and a `product-finder-web` public client. The default Keycloak administrator is `admin` /
 `admin`; override `KEYCLOAK_ADMIN_PASSWORD` before using it outside local development. The compose file uses
 `KEYCLOAK_JWK_SET_URI` so the backend can retrieve signing keys over the Docker network while retaining the browser's
 `localhost` issuer URL. It also starts PostgreSQL and stores its data in the `product-finder-postgres` Docker volume.
+MongoDB stores the catalog cache in the `product-finder-mongo` Docker volume.

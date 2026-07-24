@@ -8,12 +8,15 @@ import java.time.Duration;
 class CatalogProperties {
     private Duration connectTimeout = Duration.ofSeconds(2);
     private Duration readTimeout = Duration.ofSeconds(5);
+    private int fullRefreshLimit = 10_000;
     private Catalogs catalogs = new Catalogs();
 
     public Duration getConnectTimeout() { return connectTimeout; }
     public void setConnectTimeout(Duration connectTimeout) { this.connectTimeout = connectTimeout; }
     public Duration getReadTimeout() { return readTimeout; }
     public void setReadTimeout(Duration readTimeout) { this.readTimeout = readTimeout; }
+    public int getFullRefreshLimit() { return fullRefreshLimit; }
+    public void setFullRefreshLimit(int fullRefreshLimit) { this.fullRefreshLimit = fullRefreshLimit; }
     public Catalogs getCatalogs() { return catalogs; }
     public void setCatalogs(Catalogs catalogs) { this.catalogs = catalogs == null ? new Catalogs() : catalogs; }
 

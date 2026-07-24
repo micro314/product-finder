@@ -14,10 +14,14 @@ services:
       SPRING_DATASOURCE_USERNAME: product_finder
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-product-finder}
       JPA_DDL_AUTO: update
+      MONGODB_URI: mongodb://product_finder:${MONGO_PASSWORD:-product-finder}@mongo:27017/product_finder?authSource=admin
+      MONGODB_AUTO_INDEX_CREATION: true
     depends_on:
       keycloak:
         condition: service_started
       postgres:
+        condition: service_healthy
+      mongo:
         condition: service_healthy
 
   keycloak:
@@ -46,5 +50,20 @@ services:
     volumes:
       - product-finder-postgres:/var/lib/postgresql/data
 
+  mongo:
+    image: mongo:8.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: product_finder
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-product-finder}
+      MONGO_INITDB_DATABASE: product_finder
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --username $$MONGO_INITDB_ROOT_USERNAME --password $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase admin --eval 'db.adminCommand(\"ping\")'"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - product-finder-mongo:/data/db
+
 volumes:
   product-finder-postgres:
+  product-finder-mongo:

@@ -20,10 +20,18 @@ import static com.rosati.productfinder.source.internal.CatalogResponse.uri;
 
 /** Adapter for B&H Photo Video's POST-based graphics-card search API. */
 class BhPhotoVideoProductSource implements ProductSource {
+    private static final int DEFAULT_FULL_REFRESH_LIMIT = 10_000;
+
     private final RestClient client;
+    private final int fullRefreshLimit;
 
     BhPhotoVideoProductSource(RestClient client) {
+        this(client, DEFAULT_FULL_REFRESH_LIMIT);
+    }
+
+    BhPhotoVideoProductSource(RestClient client, int fullRefreshLimit) {
         this.client = client;
+        this.fullRefreshLimit = fullRefreshLimit;
     }
 
     @Override
@@ -33,7 +41,16 @@ class BhPhotoVideoProductSource implements ProductSource {
 
     @Override
     public List<Product> search(ProductQuery query) {
-        var request = Map.of("searchTerm", query.text(), "maxResults", query.limit(),
+        return fetch(query.text(), query.limit());
+    }
+
+    @Override
+    public List<Product> allProducts() {
+        return fetch("*", fullRefreshLimit);
+    }
+
+    private List<Product> fetch(String searchTerm, int maxResults) {
+        var request = Map.of("searchTerm", searchTerm, "maxResults", maxResults,
                 "category", "graphics-cards");
         JsonNode response = client.post().uri("/api/products/search").contentType(MediaType.APPLICATION_JSON)
                 .body(request).retrieve().body(JsonNode.class);

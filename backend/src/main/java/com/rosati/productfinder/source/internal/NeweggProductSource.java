@@ -19,10 +19,18 @@ import static com.rosati.productfinder.source.internal.CatalogResponse.uri;
 
 /** Adapter for Newegg's GET-based graphics-card search API. */
 class NeweggProductSource implements ProductSource {
+    private static final int DEFAULT_FULL_REFRESH_LIMIT = 10_000;
+
     private final RestClient client;
+    private final int fullRefreshLimit;
 
     NeweggProductSource(RestClient client) {
+        this(client, DEFAULT_FULL_REFRESH_LIMIT);
+    }
+
+    NeweggProductSource(RestClient client, int fullRefreshLimit) {
         this.client = client;
+        this.fullRefreshLimit = fullRefreshLimit;
     }
 
     @Override
@@ -32,8 +40,17 @@ class NeweggProductSource implements ProductSource {
 
     @Override
     public List<Product> search(ProductQuery query) {
+        return fetch(query.text(), query.limit());
+    }
+
+    @Override
+    public List<Product> allProducts() {
+        return fetch("*", fullRefreshLimit);
+    }
+
+    private List<Product> fetch(String keyword, int pageSize) {
         JsonNode response = client.get().uri(uri -> uri.path("/api/search")
-                        .queryParam("keyword", query.text()).queryParam("pageSize", query.limit()).build())
+                        .queryParam("keyword", keyword).queryParam("pageSize", pageSize).build())
                 .retrieve().body(JsonNode.class);
         JsonNode products = requiredArray(response, "/items", name());
         var results = new ArrayList<Product>();

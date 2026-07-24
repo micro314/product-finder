@@ -4,6 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:none}
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/product_finder}
+      auto-index-creation: ${MONGODB_AUTO_INDEX_CREATION:false}
 
 # Set these in the deployment environment. The issuer must include the realm, for example:
 # https://keycloak.example.com/realms/product-finder
@@ -17,6 +21,10 @@ keycloak:
 product-finder:
   connect-timeout: 2s
   read-timeout: 5s
+  # Midnight UTC. Override with PRODUCT_CACHE_REFRESH_CRON and PRODUCT_CACHE_REFRESH_ZONE when needed.
+  cache-refresh-cron: ${PRODUCT_CACHE_REFRESH_CRON:0 0 0 * * *}
+  cache-refresh-zone: ${PRODUCT_CACHE_REFRESH_ZONE:UTC}
+  full-refresh-limit: ${PRODUCT_FULL_REFRESH_LIMIT:10000}
   catalogs:
     newegg:
       enabled: ${NEWEGG_ENABLED:false}

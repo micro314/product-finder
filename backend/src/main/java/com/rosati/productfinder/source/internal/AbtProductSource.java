@@ -19,10 +19,18 @@ import static com.rosati.productfinder.source.internal.CatalogResponse.uri;
 
 /** Adapter for Abt's document-style graphics-card search API. */
 class AbtProductSource implements ProductSource {
+    private static final int DEFAULT_FULL_REFRESH_LIMIT = 10_000;
+
     private final RestClient client;
+    private final int fullRefreshLimit;
 
     AbtProductSource(RestClient client) {
+        this(client, DEFAULT_FULL_REFRESH_LIMIT);
+    }
+
+    AbtProductSource(RestClient client, int fullRefreshLimit) {
         this.client = client;
+        this.fullRefreshLimit = fullRefreshLimit;
     }
 
     @Override
@@ -32,8 +40,17 @@ class AbtProductSource implements ProductSource {
 
     @Override
     public List<Product> search(ProductQuery query) {
+        return fetch(query.text(), query.limit());
+    }
+
+    @Override
+    public List<Product> allProducts() {
+        return fetch("*", fullRefreshLimit);
+    }
+
+    private List<Product> fetch(String query, int rows) {
         JsonNode response = client.get().uri(uri -> uri.path("/resources/search")
-                        .queryParam("query", query.text()).queryParam("rows", query.limit())
+                        .queryParam("query", query).queryParam("rows", rows)
                         .queryParam("category", "graphics-cards").build())
                 .retrieve().body(JsonNode.class);
         JsonNode data = requiredArray(response, "/response/docs", name());
