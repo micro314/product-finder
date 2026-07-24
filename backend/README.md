@@ -42,7 +42,7 @@ when an authoritative API specification is available.
 
 ## API
 
-`GET /api/products/search?q=office%20chair&limit=20`
+`GET /api/products/search?q=graphics%20card&limit=20`
 
 The response contains canonical `products` plus per-source `failures`. A failed or timed-out database does not discard
 results returned by healthy databases.
