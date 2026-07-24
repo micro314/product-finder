@@ -1,3 +1,20 @@
 spring:
   application:
     name: product-finder
+
+product-finder:
+  connect-timeout: 2s
+  read-timeout: 5s
+  catalogs:
+    newegg:
+      enabled: ${NEWEGG_ENABLED:false}
+      base-url: ${NEWEGG_BASE_URL:}
+      api-key: ${NEWEGG_API_KEY:}
+    bh-photo-video:
+      enabled: ${BH_PHOTO_VIDEO_ENABLED:false}
+      base-url: ${BH_PHOTO_VIDEO_BASE_URL:}
+      api-key: ${BH_PHOTO_VIDEO_API_KEY:}
+    abt:
+      enabled: ${ABT_ENABLED:false}
+      base-url: ${ABT_BASE_URL:}
+      api-key: ${ABT_API_KEY:}
