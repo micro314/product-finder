@@ -2,6 +2,13 @@ spring:
   application:
     name: product-finder
 
+# Set these in the deployment environment. The issuer must include the realm, for example:
+# https://keycloak.example.com/realms/product-finder
+keycloak:
+  issuer-uri: ${KEYCLOAK_ISSUER_URI:}
+  client-id: ${KEYCLOAK_CLIENT_ID:}
+  redirect-uri: ${KEYCLOAK_REDIRECT_URI:}
+
 product-finder:
   connect-timeout: 2s
   read-timeout: 5s

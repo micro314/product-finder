@@ -48,3 +48,25 @@ The response contains canonical `products` plus per-source `failures`. A failed 
 results returned by healthy databases.
 
 Run verification with `./gradlew test`.
+
+## Authentication with Keycloak
+
+Product Finder delegates account creation and sign-in to Keycloak; it never receives or stores a password. Configure a
+public Keycloak client and set these environment variables:
+
+```bash
+KEYCLOAK_ISSUER_URI=https://keycloak.example.com/realms/product-finder
+KEYCLOAK_CLIENT_ID=product-finder-web
+KEYCLOAK_REDIRECT_URI=https://app.example.com/auth/callback
+```
+
+The redirect URI must exactly match a Valid Redirect URI configured on that Keycloak client. Enable **User
+registration** in the realm if users should be able to create their own accounts.
+
+- `GET /api/auth/login` redirects to Keycloak's authorization flow.
+- `GET /api/auth/register` redirects to Keycloak's registration flow.
+- `GET /api/auth/me` requires `Authorization: Bearer <Keycloak access token>` and returns the authenticated user's
+  subject, username, and email.
+
+With `KEYCLOAK_ISSUER_URI` configured, the backend validates issuer-signed JWTs on the authenticated endpoint. The
+product search API remains public.
