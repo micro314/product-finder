@@ -26,6 +26,9 @@ public class QueryHistoryEntry {
     @Column(name = "query_text", nullable = false, length = 500)
     private String queryText;
 
+    @Column(name = "filters_json", length = 4000)
+    private String filtersJson;
+
     @Column(name = "requested_limit", nullable = false)
     private int requestedLimit;
 
@@ -36,10 +39,15 @@ public class QueryHistoryEntry {
     }
 
     public QueryHistoryEntry(String userId, String queryText, int requestedLimit, Instant submittedAt) {
+        this(userId, queryText, requestedLimit, submittedAt, null);
+    }
+
+    public QueryHistoryEntry(String userId, String queryText, int requestedLimit, Instant submittedAt, String filtersJson) {
         this.userId = userId;
         this.queryText = queryText;
         this.requestedLimit = requestedLimit;
         this.submittedAt = submittedAt;
+        this.filtersJson = filtersJson;
     }
 
     public String queryText() {
@@ -56,5 +64,9 @@ public class QueryHistoryEntry {
 
     public Instant submittedAt() {
         return submittedAt;
+    }
+
+    public String filtersJson() {
+        return filtersJson;
     }
 }

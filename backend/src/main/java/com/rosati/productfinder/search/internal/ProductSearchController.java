@@ -47,7 +47,7 @@ class ProductSearchController {
                 chipset, memoryType, minMemorySizeGb, maxMemorySizeGb,
                 minBoostClockMhz, maxBoostClockMhz, minPrice, maxPrice);
         ProductQuery productQuery = new ProductQuery(query, limit, filters);
-        if (!productQuery.text().isBlank() && principal instanceof JwtAuthenticationToken authentication) {
+        if (principal instanceof JwtAuthenticationToken authentication) {
             queryHistory.record(authentication.getToken().getSubject(), productQuery);
         }
         return searchService.search(productQuery);

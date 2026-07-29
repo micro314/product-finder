@@ -13,7 +13,7 @@ export type ProductFilters = {
 }
 
 export function hasProductFilters(filters: ProductFilters) {
-  return Object.values(filters).some((value) => value !== undefined)
+  return Object.values(filters).some((value) => value !== undefined && value !== null)
 }
 
 export type FilterOptions = {
