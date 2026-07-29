@@ -40,8 +40,9 @@ public class QueryHistoryService {
         values.put("maxMemorySizeGb", filters.maxMemorySizeGb()); values.put("minBoostClockMhz", filters.minBoostClockMhz());
         values.put("maxBoostClockMhz", filters.maxBoostClockMhz()); values.put("minPrice", filters.minPrice());
         values.put("maxPrice", filters.maxPrice());
-        return values.entrySet().stream().filter(entry -> entry.getValue() != null)
-                .map(entry -> entry.getKey() + "=" + URLEncoder.encode(String.valueOf(entry.getValue()), StandardCharsets.UTF_8))
+        return values.entrySet().stream().filter(entry -> entry.getValue() != null
+                        && (!(entry.getValue() instanceof List<?> list) || !list.isEmpty()))
+                .map(entry -> entry.getKey() + "=" + URLEncoder.encode(value(entry.getValue()), StandardCharsets.UTF_8))
                 .collect(java.util.stream.Collectors.joining("&"));
     }
 
@@ -67,8 +68,12 @@ public class QueryHistoryService {
         return String.join(" · ", criteria);
     }
 
-    private void add(List<String> criteria, String value) {
-        if (value != null && !value.isBlank()) criteria.add(value);
+    private String value(Object value) {
+        return value instanceof List<?> list ? String.join(",", list.stream().map(String::valueOf).toList()) : String.valueOf(value);
+    }
+
+    private void add(List<String> criteria, List<String> values) {
+        if (!values.isEmpty()) criteria.add(String.join(", ", values));
     }
 
     private String range(Object minimum, Object maximum, String unit) {
@@ -101,8 +106,8 @@ public class QueryHistoryService {
             if (parts.length == 2) values.put(parts[0], URLDecoder.decode(parts[1], StandardCharsets.UTF_8));
         }
         try {
-            return new ProductFilters(values.get("source"), values.get("manufacturer"), values.get("chipsetManufacturer"),
-                    values.get("chipset"), values.get("memoryType"), integer(values, "minMemorySizeGb"),
+            return new ProductFilters(list(values, "source"), list(values, "manufacturer"), list(values, "chipsetManufacturer"),
+                    list(values, "chipset"), list(values, "memoryType"), integer(values, "minMemorySizeGb"),
                     integer(values, "maxMemorySizeGb"), integer(values, "minBoostClockMhz"), integer(values, "maxBoostClockMhz"),
                     decimal(values, "minPrice"), decimal(values, "maxPrice"));
         } catch (RuntimeException exception) {
@@ -112,6 +117,7 @@ public class QueryHistoryService {
 
     private Integer integer(Map<String, String> values, String key) { return values.get(key) == null ? null : Integer.valueOf(values.get(key)); }
     private java.math.BigDecimal decimal(Map<String, String> values, String key) { return values.get(key) == null ? null : new java.math.BigDecimal(values.get(key)); }
+    private List<String> list(Map<String, String> values, String key) { return values.get(key) == null ? List.of() : List.of(values.get(key).split(",")); }
 
     @Transactional
     public void deleteForUser(String userId, Long entryId) {

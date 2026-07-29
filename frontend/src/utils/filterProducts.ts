@@ -3,11 +3,11 @@ import type { FilterOptions } from '../types/filters'
 import type { Product } from '../types/product'
 
 export function matchesProductFilters(product: Product, filters: ProductFilters, excluded?: keyof ProductFilters) {
-  return (excluded === 'source' || !filters.source || product.source === filters.source)
-    && (excluded === 'manufacturer' || !filters.manufacturer || product.manufacturer === filters.manufacturer)
-    && (excluded === 'chipsetManufacturer' || !filters.chipsetManufacturer || product.chipsetManufacturer === filters.chipsetManufacturer)
-    && (excluded === 'chipset' || !filters.chipset || product.chipset === filters.chipset)
-    && (excluded === 'memoryType' || !filters.memoryType || product.memoryType === filters.memoryType)
+  return (excluded === 'source' || !filters.source?.length || filters.source.includes(product.source))
+    && (excluded === 'manufacturer' || !filters.manufacturer?.length || filters.manufacturer.includes(product.manufacturer))
+    && (excluded === 'chipsetManufacturer' || !filters.chipsetManufacturer?.length || filters.chipsetManufacturer.includes(product.chipsetManufacturer))
+    && (excluded === 'chipset' || !filters.chipset?.length || filters.chipset.includes(product.chipset))
+    && (excluded === 'memoryType' || !filters.memoryType?.length || filters.memoryType.includes(product.memoryType))
     && (excluded === 'minMemorySizeGb' || excluded === 'maxMemorySizeGb' || inRange(product.memorySizeGb, filters.minMemorySizeGb, filters.maxMemorySizeGb))
     && (excluded === 'minBoostClockMhz' || excluded === 'maxBoostClockMhz' || inRange(product.boostClockMhz, filters.minBoostClockMhz, filters.maxBoostClockMhz))
     && (excluded === 'minPrice' || excluded === 'maxPrice' || inRange(product.price, filters.minPrice, filters.maxPrice))

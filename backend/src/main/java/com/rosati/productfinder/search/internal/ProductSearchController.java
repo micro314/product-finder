@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.List;
 
 @Validated
 @RestController
@@ -30,11 +31,11 @@ class ProductSearchController {
     SearchResponse search(
             @RequestParam(value = "q", defaultValue = "") String query,
             @RequestParam(defaultValue = "20") @Min(1) @Max(ProductQuery.MAX_LIMIT) int limit,
-            @RequestParam(required = false) String source,
-            @RequestParam(required = false) String manufacturer,
-            @RequestParam(required = false) String chipsetManufacturer,
-            @RequestParam(required = false) String chipset,
-            @RequestParam(required = false) String memoryType,
+            @RequestParam(required = false) List<String> source,
+            @RequestParam(required = false) List<String> manufacturer,
+            @RequestParam(required = false) List<String> chipsetManufacturer,
+            @RequestParam(required = false) List<String> chipset,
+            @RequestParam(required = false) List<String> memoryType,
             @RequestParam(required = false) Integer minMemorySizeGb,
             @RequestParam(required = false) Integer maxMemorySizeGb,
             @RequestParam(required = false) Integer minBoostClockMhz,

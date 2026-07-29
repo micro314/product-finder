@@ -69,9 +69,9 @@ public class CachedCatalogProduct {
     }
 
     public boolean matches(ProductFilters filters) {
-        return contains(source, filters.source()) && contains(manufacturer, filters.manufacturer())
-                && contains(chipsetManufacturer, filters.chipsetManufacturer()) && contains(chipset, filters.chipset())
-                && contains(memoryType, filters.memoryType())
+        return containsAny(source, filters.source()) && containsAny(manufacturer, filters.manufacturer())
+                && containsAny(chipsetManufacturer, filters.chipsetManufacturer()) && containsAny(chipset, filters.chipset())
+                && containsAny(memoryType, filters.memoryType())
                 && inRange(memorySizeGb, filters.minMemorySizeGb(), filters.maxMemorySizeGb())
                 && inRange(boostClockMhz, filters.minBoostClockMhz(), filters.maxBoostClockMhz())
                 && inRange(price, filters.minPrice(), filters.maxPrice());
@@ -85,6 +85,10 @@ public class CachedCatalogProduct {
     private boolean contains(String value, String query) {
         return query == null || query.isBlank()
                 || value != null && value.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT));
+    }
+
+    private boolean containsAny(String value, java.util.List<String> values) {
+        return values.isEmpty() || values.stream().anyMatch(candidate -> value != null && value.equalsIgnoreCase(candidate));
     }
 
     private <T extends Comparable<? super T>> boolean inRange(T value, T minimum, T maximum) {
