@@ -99,6 +99,14 @@ mongoimport --uri "$MONGODB_URI" --collection catalog_products --jsonArray \
   --file backend/sample-data/catalog_products.json
 ```
 
+When using the provided Compose stack, use the top-level launcher instead; MongoDB is not exposed to the host:
+
+```bash
+./start.sh --import-test-data                 # import the repository sample data
+./start.sh --import-test-data /path/to/data.json
+./start.sh --clear-test-data                  # clear catalog_products only
+```
+
 The remote catalog APIs currently expose search-style contracts rather than a documented paginated inventory feed, so
 the adapters use the providers' wildcard query convention for their complete graphics-card catalogs. If a provider
 publishes a different inventory or pagination API, update that adapter's `allProducts()` implementation.
