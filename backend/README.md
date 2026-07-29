@@ -109,6 +109,15 @@ on port 27017 for debugging:
 ./populate-db.sh --clear                       # clear catalog_products only
 ```
 
+On Windows PowerShell, use the native equivalents:
+
+```powershell
+.\start.ps1
+.\populate-db.ps1
+.\populate-db.ps1 C:\path\to\data.json
+.\populate-db.ps1 -Clear
+```
+
 The remote catalog APIs currently expose search-style contracts rather than a documented paginated inventory feed, so
 the adapters use the providers' wildcard query convention for their complete graphics-card catalogs. If a provider
 publishes a different inventory or pagination API, update that adapter's `allProducts()` implementation.
