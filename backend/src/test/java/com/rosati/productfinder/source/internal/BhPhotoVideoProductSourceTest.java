@@ -22,7 +22,7 @@ class BhPhotoVideoProductSourceTest {
                 .andExpect(content().json("{\"searchTerm\":\"rx 9070\",\"maxResults\":3,\"category\":\"graphics-cards\"}"))
                 .andRespond(withSuccess("""
                         {"results":[{"sku":"B-9","name":"Sapphire Radeon RX 9070","manufacturer":"Sapphire",
-                        "graphicsProcessor":"Radeon RX 9070","videoMemory":{"capacityGb":16,"type":"GDDR6"},
+                        "graphicsProcessor":"Radeon RX 9070","videoMemory":{"capacityGb":16,"type":"GDDR6"},"clock":{"boostMhz":2520},
                         "description":"RDNA graphics card","price":{"value":"599.00","currency":"USD"},
                         "url":"https://bh.test/c/product/B-9","availability":"In Stock"}]}
                         """, APPLICATION_JSON));
@@ -34,6 +34,7 @@ class BhPhotoVideoProductSourceTest {
         assertThat(product.externalId()).isEqualTo("B-9");
         assertThat(product.chipset()).isEqualTo("Radeon RX 9070");
         assertThat(product.memorySizeGb()).isEqualTo(16);
+        assertThat(product.boostClockMhz()).isEqualTo(2520);
         assertThat(product.attributes()).containsEntry("availability", "In Stock");
         server.verify();
     }

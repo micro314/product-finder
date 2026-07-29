@@ -12,6 +12,7 @@ public record Product(
         String chipset,
         int memorySizeGb,
         String memoryType,
+        Integer boostClockMhz,
         String description,
         BigDecimal price,
         String currency,
@@ -31,6 +32,13 @@ public record Product(
         description = description == null ? "" : description;
         currency = currency == null ? "" : currency;
         attributes = attributes == null ? Map.of() : Map.copyOf(attributes);
+    }
+
+    public Product(String source, String externalId, String name, String manufacturer, String chipset,
+                   int memorySizeGb, String memoryType, String description, BigDecimal price, String currency,
+                   URI productUrl, Map<String, Object> attributes) {
+        this(source, externalId, name, manufacturer, chipset, memorySizeGb, memoryType, null,
+                description, price, currency, productUrl, attributes);
     }
 
     private static String requireText(String value, String field) {

@@ -36,6 +36,11 @@ final class CatalogResponse {
         return Integer.parseInt(required(item, pointer, "Catalog"));
     }
 
+    static Integer optionalInteger(JsonNode item, String pointer) {
+        String value = text(item, pointer);
+        return value.isBlank() ? null : Integer.valueOf(value);
+    }
+
     static URI uri(JsonNode item, String pointer) {
         String value = text(item, pointer);
         return value.isBlank() ? null : URI.create(value);

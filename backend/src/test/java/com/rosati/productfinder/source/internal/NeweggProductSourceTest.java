@@ -26,7 +26,7 @@ class NeweggProductSourceTest {
                 .andExpect(method(GET)).andExpect(header("X-Newegg-Api-Key", "secret"))
                 .andRespond(withSuccess("""
                         {"items":[{"itemNumber":"N-1","title":"ASUS GeForce RTX 5070 Prime","brand":"ASUS",
-                        "gpuModel":"GeForce RTX 5070","memory":{"sizeGb":12,"type":"GDDR7"},
+                        "gpuModel":"GeForce RTX 5070","memory":{"sizeGb":12,"type":"GDDR7"},"clock":{"boostMhz":2500},
                         "description":"Triple-fan graphics card","pricing":{"current":649.99,"currency":"USD"},
                         "productUrl":"https://newegg.test/p/N-1","inStock":true}]}
                         """, APPLICATION_JSON));
@@ -40,6 +40,7 @@ class NeweggProductSourceTest {
         assertThat(product.chipset()).isEqualTo("GeForce RTX 5070");
         assertThat(product.memorySizeGb()).isEqualTo(12);
         assertThat(product.memoryType()).isEqualTo("GDDR7");
+        assertThat(product.boostClockMhz()).isEqualTo(2500);
         assertThat(product.price()).isEqualByComparingTo(new BigDecimal("649.99"));
         assertThat(product.attributes()).containsEntry("inStock", true);
         server.verify();

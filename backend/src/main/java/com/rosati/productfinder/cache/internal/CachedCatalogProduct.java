@@ -23,6 +23,7 @@ public class CachedCatalogProduct {
     private String chipset;
     private int memorySizeGb;
     private String memoryType;
+    private Integer boostClockMhz;
     private String description;
     private BigDecimal price;
     private String currency;
@@ -42,6 +43,7 @@ public class CachedCatalogProduct {
         this.chipset = product.chipset();
         this.memorySizeGb = product.memorySizeGb();
         this.memoryType = product.memoryType();
+        this.boostClockMhz = product.boostClockMhz();
         this.description = product.description();
         this.price = product.price();
         this.currency = product.currency();
@@ -61,7 +63,7 @@ public class CachedCatalogProduct {
 
     public Product toProduct() {
         return new Product(source, externalId, name, manufacturer, chipset, memorySizeGb, memoryType,
-                description, price, currency, productUrl == null ? null : URI.create(productUrl), attributes);
+                boostClockMhz, description, price, currency, productUrl == null ? null : URI.create(productUrl), attributes);
     }
 
     private boolean contains(String value, String query) {

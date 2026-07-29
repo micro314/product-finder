@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static com.rosati.productfinder.source.internal.CatalogResponse.decimal;
 import static com.rosati.productfinder.source.internal.CatalogResponse.integer;
+import static com.rosati.productfinder.source.internal.CatalogResponse.optionalInteger;
 import static com.rosati.productfinder.source.internal.CatalogResponse.required;
 import static com.rosati.productfinder.source.internal.CatalogResponse.requiredArray;
 import static com.rosati.productfinder.source.internal.CatalogResponse.text;
@@ -58,7 +59,7 @@ class AbtProductSource implements ProductSource {
         for (JsonNode item : data) {
             results.add(new Product(name(), required(item, "/id", name()), required(item, "/productName", name()),
                     required(item, "/brandName", name()), required(item, "/gpuChipset", name()),
-                    integer(item, "/vramGb"), required(item, "/vramType", name()),
+                    integer(item, "/vramGb"), required(item, "/vramType", name()), optionalInteger(item, "/boostClockMhz"),
                     text(item, "/description"), decimal(item, "/salePrice"),
                     text(item, "/currency"), uri(item, "/productPage"),
                     Map.of("stockStatus", text(item, "/stockStatus"))));

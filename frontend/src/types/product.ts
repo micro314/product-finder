@@ -6,6 +6,7 @@ export type Product = {
   chipset: string
   memorySizeGb: number
   memoryType: string
+  boostClockMhz: number | null
   description: string
   price: number | null
   currency: string

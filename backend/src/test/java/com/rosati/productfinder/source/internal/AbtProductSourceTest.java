@@ -18,7 +18,7 @@ class AbtProductSourceTest {
         server.expect(requestTo("https://abt.test/resources/search?query=arc%20b580&rows=2&category=graphics-cards"))
                 .andRespond(withSuccess("""
                         {"response":{"docs":[{"id":"A-7","productName":"Intel Arc B580 Limited Edition",
-                        "brandName":"Intel","gpuChipset":"Arc B580","vramGb":12,"vramType":"GDDR6",
+                        "brandName":"Intel","gpuChipset":"Arc B580","vramGb":12,"vramType":"GDDR6","boostClockMhz":2670,
                         "description":"Battlemage graphics card","salePrice":249.99,"currency":"USD",
                         "productPage":"https://abt.test/product/A-7","stockStatus":"Available"}]}}
                         """, APPLICATION_JSON));
@@ -29,6 +29,7 @@ class AbtProductSourceTest {
         assertThat(source.name()).isEqualTo("Abt");
         assertThat(product.name()).isEqualTo("Intel Arc B580 Limited Edition");
         assertThat(product.manufacturer()).isEqualTo("Intel");
+        assertThat(product.boostClockMhz()).isEqualTo(2670);
         assertThat(product.productUrl()).hasToString("https://abt.test/product/A-7");
         assertThat(product.attributes()).containsEntry("stockStatus", "Available");
         server.verify();
