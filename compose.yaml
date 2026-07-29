@@ -50,6 +50,8 @@ services:
 
   postgres:
     image: postgres:17-alpine
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: product_finder
       POSTGRES_USER: product_finder
@@ -64,6 +66,8 @@ services:
 
   mongo:
     image: mongo:7
+    ports:
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: product_finder
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-product-finder}
