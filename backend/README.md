@@ -88,7 +88,7 @@ index is created automatically (the Compose setup already does this).
 
 ### Sample catalog data
 
-[`sample-data/catalog_products.json`](sample-data/catalog_products.json) contains 15 sample records for real NVIDIA
+[`sample-data/catalog_products.json`](sample-data/catalog_products.json) contains 200 sample records for NVIDIA
 and AMD graphics-card models from both the current and prior generation, sourced from Newegg, B&H Photo Video, and
 Abt. Prices and availability are fixed test values, not live retailer data. It uses
 [MongoDB Extended JSON](https://www.mongodb.com/docs/manual/reference/mongodb-extended-json/) so prices import as
@@ -99,12 +99,14 @@ mongoimport --uri "$MONGODB_URI" --collection catalog_products --jsonArray \
   --file backend/sample-data/catalog_products.json
 ```
 
-When using the provided Compose stack, use the top-level launcher instead; MongoDB is not exposed to the host:
+When using the provided Compose stack, start the application and populate its catalog separately. MongoDB is exposed
+on port 27017 for debugging:
 
 ```bash
-./start.sh --import-test-data                 # import the repository sample data
-./start.sh --import-test-data /path/to/data.json
-./start.sh --clear-test-data                  # clear catalog_products only
+./start.sh                                    # start the application
+./populate-db.sh                              # import the repository sample data
+./populate-db.sh /path/to/data.json            # import another JSON array
+./populate-db.sh --clear                       # clear catalog_products only
 ```
 
 The remote catalog APIs currently expose search-style contracts rather than a documented paginated inventory feed, so
