@@ -5,7 +5,6 @@ import com.rosati.productfinder.product.ProductQuery;
 import com.rosati.productfinder.product.ProductFilters;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,7 @@ class ProductSearchController {
 
     @GetMapping("/search")
     SearchResponse search(
-            @RequestParam("q") @NotBlank String query,
+            @RequestParam(value = "q", defaultValue = "") String query,
             @RequestParam(defaultValue = "20") @Min(1) @Max(ProductQuery.MAX_LIMIT) int limit,
             @RequestParam(required = false) String source,
             @RequestParam(required = false) String manufacturer,
@@ -48,7 +47,7 @@ class ProductSearchController {
                 chipset, memoryType, minMemorySizeGb, maxMemorySizeGb,
                 minBoostClockMhz, maxBoostClockMhz, minPrice, maxPrice);
         ProductQuery productQuery = new ProductQuery(query, limit, filters);
-        if (principal instanceof JwtAuthenticationToken authentication) {
+        if (!productQuery.text().isBlank() && principal instanceof JwtAuthenticationToken authentication) {
             queryHistory.record(authentication.getToken().getSubject(), productQuery);
         }
         return searchService.search(productQuery);

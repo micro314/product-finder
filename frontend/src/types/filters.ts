@@ -12,6 +12,10 @@ export type ProductFilters = {
   maxPrice?: number
 }
 
+export function hasProductFilters(filters: ProductFilters) {
+  return Object.values(filters).some((value) => value !== undefined)
+}
+
 export type FilterOptions = {
   sources: string[]
   manufacturers: string[]

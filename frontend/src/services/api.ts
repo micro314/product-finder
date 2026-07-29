@@ -55,8 +55,8 @@ export async function deleteAllQueryHistory(token: string) {
   await fetch(`${API_BASE}/api/query-history`, { method: 'DELETE', headers: authHeaders(token) })
 }
 
-export async function searchProducts(token: string, query: string, limit: number, filters: ProductFilters): Promise<SearchResponse> {
-  const params = new URLSearchParams({ q: query, limit: String(limit) })
+export async function searchProducts(token: string, query: string, filters: ProductFilters): Promise<SearchResponse> {
+  const params = new URLSearchParams({ q: query, limit: '10000' })
   Object.entries(filters).forEach(([key, value]) => { if (value !== undefined) params.set(key, String(value)) })
   const response = await fetch(`${API_BASE}/api/products/search?${params}`, { headers: authHeaders(token) })
   if (response.status === 401) throw new Error('Your session expired. Please sign in again.')

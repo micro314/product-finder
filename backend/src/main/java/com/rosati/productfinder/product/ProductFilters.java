@@ -25,4 +25,10 @@ public record ProductFilters(
         return new ProductFilters(null, null, null, null, null, null, null, null,
                 null, null, null);
     }
+
+    public boolean isEmpty() {
+        return source == null && manufacturer == null && chipsetManufacturer == null && chipset == null
+                && memoryType == null && minMemorySizeGb == null && maxMemorySizeGb == null
+                && minBoostClockMhz == null && maxBoostClockMhz == null && minPrice == null && maxPrice == null;
+    }
 }
