@@ -68,14 +68,14 @@ registration** in the realm if users should be able to create their own accounts
 - `GET /api/auth/me` requires `Authorization: Bearer <Keycloak access token>` and returns the authenticated user's
   subject, username, and email.
 
-With `KEYCLOAK_ISSUER_URI` configured, the backend validates issuer-signed JWTs on the authenticated endpoint. The
-product search API remains public.
+`KEYCLOAK_ISSUER_URI` is required at startup. The backend validates issuer-signed JWTs and requires a Keycloak bearer
+token for every endpoint other than the login and registration redirects. Requests without a valid token receive
+`401 Unauthorized` and must begin authentication at `/api/auth/login`.
 
 ## Query history
 
-Every product search submitted with a Keycloak bearer token is stored against that token's subject. Retrieve the
-current user's most recent searches with `GET /api/query-history` and the same bearer token. Anonymous searches remain
-available but are not stored because they cannot be attributed to a user.
+Every product search is stored against the authenticated Keycloak user's subject. Retrieve the current user's most
+recent searches with `GET /api/query-history` and the same bearer token.
 
 ## Catalog cache
 
