@@ -1,4 +1,14 @@
 services:
+  frontend:
+    build:
+      context: ./frontend
+    image: product-finder-frontend:local
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_started
+
   backend:
     build:
       context: ./backend
