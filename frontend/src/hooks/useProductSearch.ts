@@ -16,7 +16,7 @@ export function useProductSearch(token: string | null) {
     if (!token) { historyVersion.current += 1; setHistory([]); return }
     const versionAtRequest = historyVersion.current
     getQueryHistory(token)
-      .then((items) => { if (versionAtRequest === historyVersion.current) setHistory(items) })
+      .then((items) => { if (versionAtRequest === historyVersion.current) setHistory(items.slice(0, 5)) })
       .catch(() => { if (versionAtRequest === historyVersion.current) setHistory([]) })
   }, [token])
 

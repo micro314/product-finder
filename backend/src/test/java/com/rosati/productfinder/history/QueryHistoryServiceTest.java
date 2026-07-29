@@ -23,4 +23,15 @@ class QueryHistoryServiceTest {
                 .extracting(QueryHistoryService.QueryHistoryItem::query)
                 .containsExactly("rtx 5090", "rtx 5070");
     }
+
+    @Test
+    void movesAnExistingQueryToTheFrontWithoutCreatingADuplicate() {
+        queryHistory.record("user-a", new ProductQuery("rtx 5070", 20));
+        queryHistory.record("user-a", new ProductQuery("rx 9070", 10));
+        queryHistory.record("user-a", new ProductQuery("RTX 5070", 5));
+
+        assertThat(queryHistory.findForUser("user-a"))
+                .extracting(QueryHistoryService.QueryHistoryItem::query)
+                .containsExactly("RTX 5070", "rx 9070");
+    }
 }

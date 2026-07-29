@@ -19,6 +19,7 @@ public class QueryHistoryService {
 
     @Transactional
     public void record(String userId, ProductQuery query) {
+        repository.deleteByUserIdAndQueryTextIgnoreCase(userId, query.text());
         repository.save(new QueryHistoryEntry(userId, query.text(), query.limit(), Instant.now()));
     }
 

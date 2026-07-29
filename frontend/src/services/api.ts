@@ -23,7 +23,14 @@ export async function getCurrentUser(token: string): Promise<User> {
 export async function getQueryHistory(token: string): Promise<HistoryItem[]> {
   const response = await fetch(`${API_BASE}/api/query-history`, { headers: authHeaders(token) })
   if (!response.ok) return []
-  return response.json() as Promise<HistoryItem[]>
+  const items = await response.json() as HistoryItem[]
+  const seen = new Set<string>()
+  return items.filter((item) => {
+    const key = item.query.trim().toLocaleLowerCase()
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
 }
 
 export async function deleteQueryHistoryItem(token: string, id: number) {

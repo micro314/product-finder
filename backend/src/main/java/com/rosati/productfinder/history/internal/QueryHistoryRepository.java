@@ -10,5 +10,7 @@ public interface QueryHistoryRepository extends JpaRepository<QueryHistoryEntry,
 
     Optional<QueryHistoryEntry> findByIdAndUserId(Long id, String userId);
 
+    long deleteByUserIdAndQueryTextIgnoreCase(String userId, String queryText);
+
     long deleteByUserId(String userId);
 }
