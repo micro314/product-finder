@@ -61,7 +61,7 @@ services:
       - product-finder-postgres:/var/lib/postgresql/data
 
   mongo:
-    image: mongo:8.0
+    image: mongo:7
     environment:
       MONGO_INITDB_ROOT_USERNAME: product_finder
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-product-finder}
