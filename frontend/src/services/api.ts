@@ -22,8 +22,8 @@ export async function getCurrentUser(token: string): Promise<User> {
 export async function getQueryHistory(token: string): Promise<string[]> {
   const response = await fetch(`${API_BASE}/api/query-history`, { headers: authHeaders(token) })
   if (!response.ok) return []
-  const items = await response.json() as { text: string }[]
-  return items.map((item) => item.text)
+  const items = await response.json() as { query: string }[]
+  return items.map((item) => item.query)
 }
 
 export async function searchProducts(token: string, query: string, limit: number): Promise<SearchResponse> {
