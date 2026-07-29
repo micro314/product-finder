@@ -6,12 +6,14 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.Map;
 
 @Document("catalog_products")
 @CompoundIndex(name = "catalog_products_source_external_id", def = "{'source': 1, 'externalId': 1}", unique = true)
-class CachedCatalogProduct {
+public class CachedCatalogProduct {
     @Id
     private String id;
     private String source;
@@ -50,5 +52,19 @@ class CachedCatalogProduct {
 
     static CachedCatalogProduct from(Product product, Instant cachedAt) {
         return new CachedCatalogProduct(product, cachedAt);
+    }
+
+    public boolean matches(String query) {
+        return contains(name, query) || contains(manufacturer, query) || contains(chipset, query)
+                || contains(description, query);
+    }
+
+    public Product toProduct() {
+        return new Product(source, externalId, name, manufacturer, chipset, memorySizeGb, memoryType,
+                description, price, currency, productUrl == null ? null : URI.create(productUrl), attributes);
+    }
+
+    private boolean contains(String value, String query) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(query);
     }
 }
