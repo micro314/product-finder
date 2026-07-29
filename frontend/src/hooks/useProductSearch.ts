@@ -16,7 +16,7 @@ export function useProductSearch(token: string | null) {
     if (!token) { historyVersion.current += 1; setHistory([]); return }
     const versionAtRequest = historyVersion.current
     getQueryHistory(token)
-      .then((items) => { if (versionAtRequest === historyVersion.current) setHistory(items.slice(0, 5)) })
+      .then((items) => { if (versionAtRequest === historyVersion.current) setHistory(items) })
       .catch(() => { if (versionAtRequest === historyVersion.current) setHistory([]) })
   }, [token])
 
@@ -30,7 +30,7 @@ export function useProductSearch(token: string | null) {
       if (version !== searchVersion.current) return
       setResults(data.products); setFailures(data.failures)
       getQueryHistory(token).then((items) => {
-        if (version === searchVersion.current) setHistory(items.slice(0, 5))
+        if (version === searchVersion.current) setHistory(items)
       })
     } catch (reason) {
       if (version === searchVersion.current) setError(reason instanceof Error ? reason.message : 'Something went wrong.')
