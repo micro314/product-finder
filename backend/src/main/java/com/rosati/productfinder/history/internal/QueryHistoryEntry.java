@@ -46,6 +46,10 @@ public class QueryHistoryEntry {
         return queryText;
     }
 
+    public Long id() {
+        return id;
+    }
+
     public int limit() {
         return requestedLimit;
     }

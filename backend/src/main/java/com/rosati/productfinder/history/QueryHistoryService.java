@@ -25,10 +25,20 @@ public class QueryHistoryService {
     @Transactional(readOnly = true)
     public List<QueryHistoryItem> findForUser(String userId) {
         return repository.findByUserIdOrderBySubmittedAtDescIdDesc(userId).stream()
-                .map(entry -> new QueryHistoryItem(entry.queryText(), entry.limit(), entry.submittedAt()))
+                .map(entry -> new QueryHistoryItem(entry.id(), entry.queryText(), entry.limit(), entry.submittedAt()))
                 .toList();
     }
 
-    public record QueryHistoryItem(String query, int limit, Instant submittedAt) {
+    @Transactional
+    public void deleteForUser(String userId, Long entryId) {
+        repository.findByIdAndUserId(entryId, userId).ifPresent(repository::delete);
+    }
+
+    @Transactional
+    public void deleteAllForUser(String userId) {
+        repository.deleteByUserId(userId);
+    }
+
+    public record QueryHistoryItem(Long id, String query, int limit, Instant submittedAt) {
     }
 }

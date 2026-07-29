@@ -1,5 +1,6 @@
 import { API_BASE } from '../config'
 import type { User } from '../types/auth'
+import type { HistoryItem } from '../types/history'
 import type { SearchResponse } from '../types/product'
 
 export class ApiError extends Error {
@@ -19,11 +20,18 @@ export async function getCurrentUser(token: string): Promise<User> {
   return response.json() as Promise<User>
 }
 
-export async function getQueryHistory(token: string): Promise<string[]> {
+export async function getQueryHistory(token: string): Promise<HistoryItem[]> {
   const response = await fetch(`${API_BASE}/api/query-history`, { headers: authHeaders(token) })
   if (!response.ok) return []
-  const items = await response.json() as { query: string }[]
-  return items.map((item) => item.query)
+  return response.json() as Promise<HistoryItem[]>
+}
+
+export async function deleteQueryHistoryItem(token: string, id: number) {
+  await fetch(`${API_BASE}/api/query-history/${id}`, { method: 'DELETE', headers: authHeaders(token) })
+}
+
+export async function deleteAllQueryHistory(token: string) {
+  await fetch(`${API_BASE}/api/query-history`, { method: 'DELETE', headers: authHeaders(token) })
 }
 
 export async function searchProducts(token: string, query: string, limit: number): Promise<SearchResponse> {
