@@ -1,6 +1,7 @@
 package com.rosati.productfinder.cache.internal;
 
 import com.rosati.productfinder.product.Product;
+import com.rosati.productfinder.product.ProductFilters;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -64,8 +65,16 @@ public class CachedCatalogProduct {
 
     public boolean matches(String query) {
         return contains(name, query) || contains(manufacturer, query) || contains(chipset, query)
-                || contains(chipsetManufacturer, query)
-                || contains(description, query);
+                || contains(chipsetManufacturer, query);
+    }
+
+    public boolean matches(ProductFilters filters) {
+        return contains(source, filters.source()) && contains(manufacturer, filters.manufacturer())
+                && contains(chipsetManufacturer, filters.chipsetManufacturer()) && contains(chipset, filters.chipset())
+                && contains(memoryType, filters.memoryType())
+                && inRange(memorySizeGb, filters.minMemorySizeGb(), filters.maxMemorySizeGb())
+                && inRange(boostClockMhz, filters.minBoostClockMhz(), filters.maxBoostClockMhz())
+                && inRange(price, filters.minPrice(), filters.maxPrice());
     }
 
     public Product toProduct() {
@@ -74,6 +83,12 @@ public class CachedCatalogProduct {
     }
 
     private boolean contains(String value, String query) {
-        return value != null && value.toLowerCase(Locale.ROOT).contains(query);
+        return query == null || query.isBlank()
+                || value != null && value.toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT));
+    }
+
+    private <T extends Comparable<? super T>> boolean inRange(T value, T minimum, T maximum) {
+        return (minimum == null || value != null && value.compareTo(minimum) >= 0)
+                && (maximum == null || value != null && value.compareTo(maximum) <= 0);
     }
 }

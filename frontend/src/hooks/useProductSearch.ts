@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { deleteAllQueryHistory, deleteQueryHistoryItem, getQueryHistory, searchProducts } from '../services/api'
 import type { HistoryItem } from '../types/history'
+import type { ProductFilters } from '../types/filters'
 import type { Product, SourceFailure } from '../types/product'
 
 export function useProductSearch(token: string | null) {
@@ -20,13 +21,13 @@ export function useProductSearch(token: string | null) {
       .catch(() => { if (versionAtRequest === historyVersion.current) setHistory([]) })
   }, [token])
 
-  const search = useCallback(async (query: string, limit: number) => {
+  const search = useCallback(async (query: string, limit: number, filters: ProductFilters = {}) => {
     if (!token || !query.trim()) return
     const version = ++searchVersion.current
     historyVersion.current += 1
     setLoading(true); setError(''); setFailures([])
     try {
-      const data = await searchProducts(token, query.trim(), limit)
+      const data = await searchProducts(token, query.trim(), limit, filters)
       if (version !== searchVersion.current) return
       setResults(data.products); setFailures(data.failures)
       getQueryHistory(token).then((items) => {
