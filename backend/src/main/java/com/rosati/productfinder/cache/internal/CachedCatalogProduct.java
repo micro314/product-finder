@@ -58,6 +58,10 @@ public class CachedCatalogProduct {
         return new CachedCatalogProduct(product, cachedAt);
     }
 
+    public Instant cachedAt() {
+        return cachedAt;
+    }
+
     public boolean matches(String query) {
         return contains(name, query) || contains(manufacturer, query) || contains(chipset, query)
                 || contains(chipsetManufacturer, query)

@@ -1,6 +1,7 @@
 import { API_BASE } from '../config'
 import type { User } from '../types/auth'
 import type { HistoryItem } from '../types/history'
+import type { IndexStatus } from '../types/index'
 import type { SearchResponse } from '../types/product'
 
 export class ApiError extends Error {
@@ -13,6 +14,12 @@ export class ApiError extends Error {
 }
 
 function authHeaders(token: string) { return { Authorization: `Bearer ${token}` } }
+
+export async function getIndexStatus(): Promise<IndexStatus> {
+  const response = await fetch(`${API_BASE}/api/index/status`)
+  if (!response.ok) throw new ApiError(`Unable to load index status (HTTP ${response.status}).`, response.status)
+  return response.json() as Promise<IndexStatus>
+}
 
 export async function getCurrentUser(token: string): Promise<User> {
   const response = await fetch(`${API_BASE}/api/auth/me`, { headers: authHeaders(token) })
