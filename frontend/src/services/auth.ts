@@ -1,4 +1,4 @@
-import { CLIENT_ID, KEYCLOAK_ISSUER, OAUTH_STATE_KEY, PKCE_VERIFIER_KEY, TOKEN_KEY } from '../config'
+import { CLIENT_ID, ID_TOKEN_KEY, KEYCLOAK_ISSUER, OAUTH_STATE_KEY, PKCE_VERIFIER_KEY, TOKEN_KEY } from '../config'
 
 type AuthEndpoint = 'auth' | 'registrations'
 
@@ -25,6 +25,7 @@ export async function startAuth(endpoint: AuthEndpoint) {
     code_challenge_method: 'S256',
     state,
   })
+  if (endpoint === 'auth') params.set('prompt', 'login')
   window.location.assign(`${KEYCLOAK_ISSUER}/protocol/openid-connect/${endpoint}?${params}`)
 }
 
@@ -42,12 +43,29 @@ export async function exchangeCode(code: string, returnedState: string | null) {
     const details = await response.json().catch(() => null) as { error_description?: string } | null
     throw new Error(details?.error_description || 'Keycloak could not complete sign in.')
   }
-  const token = await response.json() as { access_token: string }
+  const token = await response.json() as { access_token: string; id_token?: string }
   sessionStorage.removeItem(PKCE_VERIFIER_KEY)
   sessionStorage.removeItem(OAUTH_STATE_KEY)
   sessionStorage.setItem(TOKEN_KEY, token.access_token)
+  if (token.id_token) sessionStorage.setItem(ID_TOKEN_KEY, token.id_token)
   return token.access_token
 }
 
 export function getStoredToken() { return sessionStorage.getItem(TOKEN_KEY) }
-export function clearStoredToken() { sessionStorage.removeItem(TOKEN_KEY) }
+export function clearStoredToken() {
+  sessionStorage.removeItem(TOKEN_KEY)
+  sessionStorage.removeItem(ID_TOKEN_KEY)
+  sessionStorage.removeItem(PKCE_VERIFIER_KEY)
+  sessionStorage.removeItem(OAUTH_STATE_KEY)
+}
+
+export function logout() {
+  const idToken = sessionStorage.getItem(ID_TOKEN_KEY)
+  clearStoredToken()
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    post_logout_redirect_uri: `${window.location.origin}/`,
+  })
+  if (idToken) params.set('id_token_hint', idToken)
+  window.location.assign(`${KEYCLOAK_ISSUER}/protocol/openid-connect/logout?${params}`)
+}

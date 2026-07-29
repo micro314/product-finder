@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { clearStoredToken, exchangeCode, getStoredToken, startAuth } from '../services/auth'
+import { clearStoredToken, exchangeCode, getStoredToken, logout, startAuth } from '../services/auth'
 import { ApiError, getCurrentUser } from '../services/api'
 import type { User } from '../types/auth'
 
@@ -31,6 +31,6 @@ export function useAuth() {
     })
   }, [token])
 
-  const signOut = () => { clearStoredToken(); setToken(null); setUser(null) }
+  const signOut = () => { setToken(null); setUser(null); logout() }
   return { token, user, authMessage, signIn: () => startAuth('auth'), register: () => startAuth('registrations'), signOut }
 }

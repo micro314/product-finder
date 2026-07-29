@@ -16,6 +16,9 @@
       "redirectUris": [
         "http://localhost:3000/auth/callback"
       ],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/"
+      },
       "webOrigins": [
         "http://localhost:3000"
       ]
