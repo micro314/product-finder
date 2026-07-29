@@ -1,0 +1,5 @@
+export const API_BASE = import.meta.env.VITE_API_URL ?? ''
+export const KEYCLOAK_ISSUER = import.meta.env.VITE_KEYCLOAK_ISSUER ?? 'http://localhost:8081/realms/product-finder'
+export const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID ?? 'product-finder-web'
+export const TOKEN_KEY = 'product-finder.access-token'
+export const PKCE_VERIFIER_KEY = 'product-finder.pkce-verifier'

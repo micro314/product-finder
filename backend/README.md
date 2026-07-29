@@ -86,6 +86,19 @@ product ID. Records missing from a successfully refreshed catalog are removed. O
 Set `MONGODB_AUTO_INDEX_CREATION=true` when provisioning a new MongoDB deployment so its source/external-ID unique
 index is created automatically (the Compose setup already does this).
 
+### Sample catalog data
+
+[`sample-data/catalog_products.json`](sample-data/catalog_products.json) contains 15 sample records for real NVIDIA
+and AMD graphics-card models from both the current and prior generation, sourced from Newegg, B&H Photo Video, and
+Abt. Prices and availability are fixed test values, not live retailer data. It uses
+[MongoDB Extended JSON](https://www.mongodb.com/docs/manual/reference/mongodb-extended-json/) so prices import as
+`Decimal128` and cache timestamps import as BSON dates. Load it with MongoDB Database Tools:
+
+```bash
+mongoimport --uri "$MONGODB_URI" --collection catalog_products --jsonArray \
+  --file backend/sample-data/catalog_products.json
+```
+
 The remote catalog APIs currently expose search-style contracts rather than a documented paginated inventory feed, so
 the adapters use the providers' wildcard query convention for their complete graphics-card catalogs. If a provider
 publishes a different inventory or pagination API, update that adapter's `allProducts()` implementation.
