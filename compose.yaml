@@ -24,6 +24,7 @@ services:
       SPRING_DATASOURCE_USERNAME: product_finder
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-product-finder}
       JPA_DDL_AUTO: update
+      SPRING_MONGODB_URI: mongodb://product_finder:${MONGO_PASSWORD:-product-finder}@mongo:27017/product_finder?authSource=admin
       MONGODB_URI: mongodb://product_finder:${MONGO_PASSWORD:-product-finder}@mongo:27017/product_finder?authSource=admin
       MONGODB_AUTO_INDEX_CREATION: true
     depends_on:

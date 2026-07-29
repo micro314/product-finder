@@ -3,3 +3,4 @@ export const KEYCLOAK_ISSUER = import.meta.env.VITE_KEYCLOAK_ISSUER ?? 'http://l
 export const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID ?? 'product-finder-web'
 export const TOKEN_KEY = 'product-finder.access-token'
 export const PKCE_VERIFIER_KEY = 'product-finder.pkce-verifier'
+export const OAUTH_STATE_KEY = 'product-finder.oauth-state'

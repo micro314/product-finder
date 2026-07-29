@@ -2,11 +2,20 @@ import { API_BASE } from '../config'
 import type { User } from '../types/auth'
 import type { SearchResponse } from '../types/product'
 
+export class ApiError extends Error {
+  readonly status: number
+
+  constructor(message: string, status: number) {
+    super(message)
+    this.status = status
+  }
+}
+
 function authHeaders(token: string) { return { Authorization: `Bearer ${token}` } }
 
 export async function getCurrentUser(token: string): Promise<User> {
   const response = await fetch(`${API_BASE}/api/auth/me`, { headers: authHeaders(token) })
-  if (!response.ok) throw new Error('Unable to load your account.')
+  if (!response.ok) throw new ApiError(`Unable to load your account (HTTP ${response.status}).`, response.status)
   return response.json() as Promise<User>
 }
 

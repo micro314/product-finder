@@ -4,9 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: ${JPA_DDL_AUTO:none}
+  mongodb:
+    uri: ${SPRING_MONGODB_URI:${MONGODB_URI:mongodb://localhost:27017/product_finder}}
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/product_finder}
       auto-index-creation: ${MONGODB_AUTO_INDEX_CREATION:false}
 
 # Set these in the deployment environment. The issuer must include the realm, for example:
