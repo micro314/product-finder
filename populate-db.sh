@@ -73,15 +73,8 @@ for attempt in {1..30}; do
   sleep 2
 done
 
-container_file="/tmp/product-finder-catalog-products-$$.json"
-cleanup() {
-  "${compose[@]}" exec -T mongo rm -f "$container_file" >/dev/null 2>&1 || true
-}
-trap cleanup EXIT
-
-"${compose[@]}" cp "$data_file" "mongo:$container_file"
 "${compose[@]}" exec -T mongo mongoimport \
   --username product_finder --password "$mongo_password" \
   --authenticationDatabase admin --db "$database" \
   --collection "$collection" --type json --jsonArray \
-  --mode upsert --upsertFields _id --file "$container_file"
+  --mode upsert --upsertFields _id --file - < "$data_file"
