@@ -77,4 +77,4 @@ done
   --username product_finder --password "$mongo_password" \
   --authenticationDatabase admin --db "$database" \
   --collection "$collection" --type json --jsonArray \
-  --mode upsert --upsertFields _id --file - < "$data_file"
+  --mode upsert --upsertFields _id < "$data_file"
