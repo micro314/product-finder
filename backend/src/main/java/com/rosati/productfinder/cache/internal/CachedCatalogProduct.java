@@ -21,6 +21,7 @@ public class CachedCatalogProduct {
     private String name;
     private String manufacturer;
     private String chipset;
+    private String chipsetManufacturer;
     private int memorySizeGb;
     private String memoryType;
     private Integer boostClockMhz;
@@ -41,6 +42,7 @@ public class CachedCatalogProduct {
         this.name = product.name();
         this.manufacturer = product.manufacturer();
         this.chipset = product.chipset();
+        this.chipsetManufacturer = product.chipsetManufacturer();
         this.memorySizeGb = product.memorySizeGb();
         this.memoryType = product.memoryType();
         this.boostClockMhz = product.boostClockMhz();
@@ -58,11 +60,12 @@ public class CachedCatalogProduct {
 
     public boolean matches(String query) {
         return contains(name, query) || contains(manufacturer, query) || contains(chipset, query)
+                || contains(chipsetManufacturer, query)
                 || contains(description, query);
     }
 
     public Product toProduct() {
-        return new Product(source, externalId, name, manufacturer, chipset, memorySizeGb, memoryType,
+        return new Product(source, externalId, name, manufacturer, chipset, chipsetManufacturer, memorySizeGb, memoryType,
                 boostClockMhz, description, price, currency, productUrl == null ? null : URI.create(productUrl), attributes);
     }
 

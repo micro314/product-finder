@@ -14,6 +14,7 @@ import java.util.Map;
 import static com.rosati.productfinder.source.internal.CatalogResponse.decimal;
 import static com.rosati.productfinder.source.internal.CatalogResponse.integer;
 import static com.rosati.productfinder.source.internal.CatalogResponse.optionalInteger;
+import static com.rosati.productfinder.source.internal.CatalogResponse.optionalText;
 import static com.rosati.productfinder.source.internal.CatalogResponse.required;
 import static com.rosati.productfinder.source.internal.CatalogResponse.requiredArray;
 import static com.rosati.productfinder.source.internal.CatalogResponse.text;
@@ -59,7 +60,7 @@ class BhPhotoVideoProductSource implements ProductSource {
         var results = new ArrayList<Product>();
         for (JsonNode item : matches) {
             results.add(new Product(name(), required(item, "/sku", name()), required(item, "/name", name()),
-                    required(item, "/manufacturer", name()), required(item, "/graphicsProcessor", name()),
+                    required(item, "/manufacturer", name()), required(item, "/graphicsProcessor", name()), optionalText(item, "/graphicsProcessorManufacturer"),
                     integer(item, "/videoMemory/capacityGb"), required(item, "/videoMemory/type", name()), optionalInteger(item, "/clock/boostMhz"),
                     text(item, "/description"), decimal(item, "/price/value"),
                     text(item, "/price/currency"), uri(item, "/url"),

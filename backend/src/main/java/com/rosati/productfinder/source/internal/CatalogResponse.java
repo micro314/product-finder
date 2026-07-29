@@ -27,6 +27,11 @@ final class CatalogResponse {
         return value.isMissingNode() || value.isNull() ? "" : value.asText();
     }
 
+    static String optionalText(JsonNode item, String pointer) {
+        String value = text(item, pointer);
+        return value.isBlank() ? null : value;
+    }
+
     static BigDecimal decimal(JsonNode item, String pointer) {
         String value = text(item, pointer);
         return value.isBlank() ? null : new BigDecimal(value);

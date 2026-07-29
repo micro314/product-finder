@@ -13,6 +13,7 @@ import java.util.Map;
 import static com.rosati.productfinder.source.internal.CatalogResponse.decimal;
 import static com.rosati.productfinder.source.internal.CatalogResponse.integer;
 import static com.rosati.productfinder.source.internal.CatalogResponse.optionalInteger;
+import static com.rosati.productfinder.source.internal.CatalogResponse.optionalText;
 import static com.rosati.productfinder.source.internal.CatalogResponse.required;
 import static com.rosati.productfinder.source.internal.CatalogResponse.requiredArray;
 import static com.rosati.productfinder.source.internal.CatalogResponse.text;
@@ -57,7 +58,7 @@ class NeweggProductSource implements ProductSource {
         var results = new ArrayList<Product>();
         for (JsonNode item : products) {
             results.add(new Product(name(), required(item, "/itemNumber", name()), required(item, "/title", name()),
-                    required(item, "/brand", name()), required(item, "/gpuModel", name()),
+                    required(item, "/brand", name()), required(item, "/gpuModel", name()), optionalText(item, "/gpuManufacturer"),
                     integer(item, "/memory/sizeGb"), required(item, "/memory/type", name()), optionalInteger(item, "/clock/boostMhz"),
                     text(item, "/description"), decimal(item, "/pricing/current"),
                     text(item, "/pricing/currency"), uri(item, "/productUrl"),

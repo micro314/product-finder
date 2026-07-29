@@ -10,6 +10,7 @@ public record Product(
         String name,
         String manufacturer,
         String chipset,
+        String chipsetManufacturer,
         int memorySizeGb,
         String memoryType,
         Integer boostClockMhz,
@@ -25,6 +26,8 @@ public record Product(
         name = requireText(name, "name");
         manufacturer = requireText(manufacturer, "manufacturer");
         chipset = requireText(chipset, "chipset");
+        chipsetManufacturer = chipsetManufacturer == null || chipsetManufacturer.isBlank()
+                ? inferChipsetManufacturer(chipset) : requireText(chipsetManufacturer, "chipsetManufacturer");
         if (memorySizeGb < 1) {
             throw new IllegalArgumentException("memorySizeGb must be positive");
         }
@@ -37,8 +40,15 @@ public record Product(
     public Product(String source, String externalId, String name, String manufacturer, String chipset,
                    int memorySizeGb, String memoryType, String description, BigDecimal price, String currency,
                    URI productUrl, Map<String, Object> attributes) {
-        this(source, externalId, name, manufacturer, chipset, memorySizeGb, memoryType, null,
+        this(source, externalId, name, manufacturer, chipset, null, memorySizeGb, memoryType, null,
                 description, price, currency, productUrl, attributes);
+    }
+
+    private static String inferChipsetManufacturer(String chipset) {
+        String normalized = chipset.toLowerCase();
+        if (normalized.contains("radeon")) return "AMD";
+        if (normalized.contains("arc")) return "Intel";
+        return "NVIDIA";
     }
 
     private static String requireText(String value, String field) {
