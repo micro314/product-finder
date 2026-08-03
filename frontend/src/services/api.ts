@@ -1,4 +1,5 @@
 import { API_BASE } from '../config'
+import { refreshAccessToken } from './auth'
 import type { User } from '../types/auth'
 import type { HistoryItem } from '../types/history'
 import type { IndexStatus } from '../types/index'
@@ -16,6 +17,16 @@ export class ApiError extends Error {
 
 function authHeaders(token: string) { return { Authorization: `Bearer ${token}` } }
 
+async function authenticatedFetch(token: string, input: RequestInfo | URL, init: RequestInit = {}) {
+  const response = await fetch(input, { ...init, headers: { ...(init.headers ?? {}), ...authHeaders(token) } })
+  if (response.status !== 401) return response
+
+  // The access token may have expired while the page was open. Refresh once
+  // and retry the original request; never retry indefinitely.
+  const refreshedToken = await refreshAccessToken()
+  return fetch(input, { ...init, headers: { ...(init.headers ?? {}), ...authHeaders(refreshedToken) } })
+}
+
 export async function getIndexStatus(): Promise<IndexStatus> {
   const response = await fetch(`${API_BASE}/api/index/status`)
   if (!response.ok) throw new ApiError(`Unable to load index status (HTTP ${response.status}).`, response.status)
@@ -29,13 +40,13 @@ export async function getFilterOptions(): Promise<FilterOptions> {
 }
 
 export async function getCurrentUser(token: string): Promise<User> {
-  const response = await fetch(`${API_BASE}/api/auth/me`, { headers: authHeaders(token) })
+  const response = await authenticatedFetch(token, `${API_BASE}/api/auth/me`)
   if (!response.ok) throw new ApiError(`Unable to load your account (HTTP ${response.status}).`, response.status)
   return response.json() as Promise<User>
 }
 
 export async function getQueryHistory(token: string): Promise<HistoryItem[]> {
-  const response = await fetch(`${API_BASE}/api/query-history`, { headers: authHeaders(token) })
+  const response = await authenticatedFetch(token, `${API_BASE}/api/query-history`)
   if (!response.ok) return []
   const items = await response.json() as HistoryItem[]
   const seen = new Set<string>()
@@ -48,11 +59,11 @@ export async function getQueryHistory(token: string): Promise<HistoryItem[]> {
 }
 
 export async function deleteQueryHistoryItem(token: string, id: number) {
-  await fetch(`${API_BASE}/api/query-history/${id}`, { method: 'DELETE', headers: authHeaders(token) })
+  await authenticatedFetch(token, `${API_BASE}/api/query-history/${id}`, { method: 'DELETE' })
 }
 
 export async function deleteAllQueryHistory(token: string) {
-  await fetch(`${API_BASE}/api/query-history`, { method: 'DELETE', headers: authHeaders(token) })
+  await authenticatedFetch(token, `${API_BASE}/api/query-history`, { method: 'DELETE' })
 }
 
 export async function searchProducts(token: string, query: string, filters: ProductFilters): Promise<SearchResponse> {
@@ -61,7 +72,7 @@ export async function searchProducts(token: string, query: string, filters: Prod
     if (Array.isArray(value)) value.forEach((item) => params.append(key, String(item)))
     else if (value !== undefined && value !== null) params.set(key, String(value))
   })
-  const response = await fetch(`${API_BASE}/api/products/search?${params}`, { headers: authHeaders(token) })
+  const response = await authenticatedFetch(token, `${API_BASE}/api/products/search?${params}`)
   if (response.status === 401) throw new Error('Your session expired. Please sign in again.')
   if (!response.ok) throw new Error('Search failed. Please try again.')
   return response.json() as Promise<SearchResponse>

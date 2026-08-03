@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { clearStoredToken, exchangeCode, getStoredToken, logout, startAuth } from '../services/auth'
+import { AUTH_EXPIRED_EVENT, AUTH_TOKEN_UPDATED_EVENT, clearStoredToken, exchangeCode, getStoredToken, logout, refreshAccessTokenIfNeeded, startAuth } from '../services/auth'
 import { ApiError, getCurrentUser } from '../services/api'
 import type { User } from '../types/auth'
 
@@ -26,9 +26,35 @@ export function useAuth() {
   useEffect(() => {
     if (!token) return
     getCurrentUser(token).then(setUser).catch((reason: Error) => {
+      if (reason instanceof ApiError && reason.status !== 401) {
+        setAuthMessage(reason.message)
+        return
+      }
       clearStoredToken(); setToken(null); setUser(null)
       setAuthMessage(reason instanceof ApiError && reason.status === 401 ? 'Your session expired. Please sign in again.' : reason.message)
     })
+  }, [token])
+
+  useEffect(() => {
+    const onTokenUpdated = (event: Event) => {
+      const updatedToken = (event as CustomEvent<string>).detail
+      if (updatedToken) setToken(updatedToken)
+    }
+    const onExpired = () => { setToken(null); setUser(null); setAuthMessage('Your session expired. Please sign in again.') }
+    window.addEventListener(AUTH_TOKEN_UPDATED_EVENT, onTokenUpdated)
+    window.addEventListener(AUTH_EXPIRED_EVENT, onExpired)
+    return () => {
+      window.removeEventListener(AUTH_TOKEN_UPDATED_EVENT, onTokenUpdated)
+      window.removeEventListener(AUTH_EXPIRED_EVENT, onExpired)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!token) return
+    const refresh = () => { void refreshAccessTokenIfNeeded().catch(() => undefined) }
+    refresh()
+    const timer = window.setInterval(refresh, 30_000)
+    return () => window.clearInterval(timer)
   }, [token])
 
   const signOut = () => { setToken(null); setUser(null); logout() }
