@@ -34,6 +34,7 @@ public class QueryHistoryService {
     private String filtersJson(ProductFilters filters) {
         if (filters.isEmpty()) return null;
         Map<String, Object> values = new java.util.LinkedHashMap<>();
+        if (filters.name() != null && !filters.name().isBlank()) values.put("name", filters.name());
         values.put("source", filters.source()); values.put("manufacturer", filters.manufacturer());
         values.put("chipsetManufacturer", filters.chipsetManufacturer()); values.put("chipset", filters.chipset());
         values.put("memoryType", filters.memoryType()); values.put("minMemorySizeGb", filters.minMemorySizeGb());
@@ -50,6 +51,7 @@ public class QueryHistoryService {
         if (query.filters().isEmpty()) return query.text();
         var filters = query.filters();
         List<String> criteria = new ArrayList<>();
+        if (filters.name() != null && !filters.name().isBlank()) criteria.add(filters.name());
         add(criteria, filters.source());
         add(criteria, filters.manufacturer());
         add(criteria, filters.chipsetManufacturer());
@@ -106,7 +108,7 @@ public class QueryHistoryService {
             if (parts.length == 2) values.put(parts[0], URLDecoder.decode(parts[1], StandardCharsets.UTF_8));
         }
         try {
-            return new ProductFilters(list(values, "source"), list(values, "manufacturer"), list(values, "chipsetManufacturer"),
+            return new ProductFilters(string(values, "name"), list(values, "source"), list(values, "manufacturer"), list(values, "chipsetManufacturer"),
                     list(values, "chipset"), list(values, "memoryType"), integer(values, "minMemorySizeGb"),
                     integer(values, "maxMemorySizeGb"), integer(values, "minBoostClockMhz"), integer(values, "maxBoostClockMhz"),
                     decimal(values, "minPrice"), decimal(values, "maxPrice"));
@@ -115,6 +117,7 @@ public class QueryHistoryService {
         }
     }
 
+    private String string(Map<String, String> values, String key) { return values.get(key); }
     private Integer integer(Map<String, String> values, String key) { return values.get(key) == null ? null : Integer.valueOf(values.get(key)); }
     private java.math.BigDecimal decimal(Map<String, String> values, String key) { return values.get(key) == null ? null : new java.math.BigDecimal(values.get(key)); }
     private List<String> list(Map<String, String> values, String key) { return values.get(key) == null ? List.of() : List.of(values.get(key).split(",")); }

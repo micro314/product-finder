@@ -4,12 +4,22 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record ProductFilters(
+        String name,
         List<String> source, List<String> manufacturer, List<String> chipsetManufacturer,
         List<String> chipset, List<String> memoryType,
         Integer minMemorySizeGb, Integer maxMemorySizeGb, Integer minBoostClockMhz, Integer maxBoostClockMhz,
         BigDecimal minPrice, BigDecimal maxPrice
 ) {
+    public ProductFilters(List<String> source, List<String> manufacturer, List<String> chipsetManufacturer,
+                          List<String> chipset, List<String> memoryType,
+                          Integer minMemorySizeGb, Integer maxMemorySizeGb, Integer minBoostClockMhz, Integer maxBoostClockMhz,
+                          BigDecimal minPrice, BigDecimal maxPrice) {
+        this(null, source, manufacturer, chipsetManufacturer, chipset, memoryType,
+                minMemorySizeGb, maxMemorySizeGb, minBoostClockMhz, maxBoostClockMhz, minPrice, maxPrice);
+    }
+
     public ProductFilters {
+        name = name == null || name.isBlank() ? null : name.trim();
         source = source == null ? List.of() : List.copyOf(source);
         manufacturer = manufacturer == null ? List.of() : List.copyOf(manufacturer);
         chipsetManufacturer = chipsetManufacturer == null ? List.of() : List.copyOf(chipsetManufacturer);
@@ -28,12 +38,13 @@ public record ProductFilters(
     }
 
     public static ProductFilters empty() {
-        return new ProductFilters(List.of(), List.of(), List.of(), List.of(), List.of(), null, null, null,
+        return new ProductFilters(null, List.of(), List.of(), List.of(), List.of(), List.of(), null, null, null,
                 null, null, null);
     }
 
     public boolean isEmpty() {
-        return source.isEmpty() && manufacturer.isEmpty() && chipsetManufacturer.isEmpty() && chipset.isEmpty()
+        return (name == null || name.isBlank()) && source.isEmpty() && manufacturer.isEmpty()
+                && chipsetManufacturer.isEmpty() && chipset.isEmpty()
                 && memoryType.isEmpty() && minMemorySizeGb == null && maxMemorySizeGb == null
                 && minBoostClockMhz == null && maxBoostClockMhz == null && minPrice == null && maxPrice == null;
     }

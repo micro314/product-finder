@@ -69,7 +69,8 @@ public class CachedCatalogProduct {
     }
 
     public boolean matches(ProductFilters filters) {
-        return containsAny(source, filters.source()) && containsAny(manufacturer, filters.manufacturer())
+        return contains(name, filters.name())
+                && containsAny(source, filters.source()) && containsAny(manufacturer, filters.manufacturer())
                 && containsAny(chipsetManufacturer, filters.chipsetManufacturer()) && containsAny(chipset, filters.chipset())
                 && containsAny(memoryType, filters.memoryType())
                 && inRange(memorySizeGb, filters.minMemorySizeGb(), filters.maxMemorySizeGb())
