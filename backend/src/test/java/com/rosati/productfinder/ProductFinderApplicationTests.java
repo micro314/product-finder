@@ -3,6 +3,7 @@ package com.rosati.productfinder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.modulith.core.ApplicationModules;
+import org.springframework.modulith.docs.Documenter;
 
 @SpringBootTest(properties = {
         "keycloak.issuer-uri=https://keycloak.example.com/realms/product-finder",
@@ -10,12 +11,19 @@ import org.springframework.modulith.core.ApplicationModules;
 })
 class ProductFinderApplicationTests {
 
+    private final ApplicationModules applicationModules = ApplicationModules.of(ProductFinderApplication.class);
+
     @Test
     void contextLoads() {
     }
 
     @Test
     void applicationModulesShouldBeValid() {
-        ApplicationModules.of(ProductFinderApplication.class).verify();
+        applicationModules.verify();
+    }
+
+    @Test
+    void writeDocumentation() {
+        new Documenter(applicationModules).writeDocumentation();
     }
 }

@@ -31,6 +31,7 @@ class ProductSearchController {
     SearchResponse search(
             @RequestParam(value = "q", defaultValue = "") String query,
             @RequestParam(defaultValue = "20") @Min(1) @Max(ProductQuery.MAX_LIMIT) int limit,
+            @RequestParam(required = false) String name,
             @RequestParam(required = false) List<String> source,
             @RequestParam(required = false) List<String> manufacturer,
             @RequestParam(required = false) List<String> chipsetManufacturer,
@@ -44,7 +45,7 @@ class ProductSearchController {
             @RequestParam(required = false) java.math.BigDecimal maxPrice,
             Principal principal
     ) {
-        ProductFilters filters = new ProductFilters(source, manufacturer, chipsetManufacturer,
+        ProductFilters filters = new ProductFilters(name, source, manufacturer, chipsetManufacturer,
                 chipset, memoryType, minMemorySizeGb, maxMemorySizeGb,
                 minBoostClockMhz, maxBoostClockMhz, minPrice, maxPrice);
         ProductQuery productQuery = new ProductQuery(query, limit, filters);
