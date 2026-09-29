@@ -1,0 +1,63 @@
+stages:
+  - test
+  - build
+
+image: eclipse-temurin:25-jdk
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/backend/.gradle"
+
+cache:
+  key:
+    files:
+      - backend/build.gradle.kts
+  paths:
+    - backend/.gradle/wrapper
+    - backend/.gradle/caches
+
+test:
+  stage: test
+  services:
+    - name: mongo:7
+      alias: mongo
+    - name: postgres:17-alpine
+      alias: postgres
+  variables:
+    SPRING_MONGODB_URI: "mongodb://mongo:27017/product_finder"
+    SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/product_finder"
+    SPRING_DATASOURCE_USERNAME: "product_finder"
+    SPRING_DATASOURCE_PASSWORD: "product-finder"
+    POSTGRES_DB: "product_finder"
+    POSTGRES_USER: "product_finder"
+    POSTGRES_PASSWORD: "product-finder"
+  script:
+    - cd backend
+    - chmod +x gradlew
+    - ./gradlew test
+
+build:
+  stage: build
+  script:
+    - cd backend
+    - chmod +x gradlew
+    - ./gradlew build -x test
+  artifacts:
+    paths:
+      - backend/build/libs/*.jar
+
+docker-build:
+  stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER_IMAGE: $CI_REGISTRY_IMAGE/backend
+  script:
+    - docker build -t $DOCKER_IMAGE:$CI_COMMIT_SHA ./backend
+    - docker tag $DOCKER_IMAGE:$CI_COMMIT_SHA $DOCKER_IMAGE:latest
+    # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # - docker push $DOCKER_IMAGE:$CI_COMMIT_SHA
+    # - docker push $DOCKER_IMAGE:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
